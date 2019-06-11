@@ -1,0 +1,127 @@
+﻿@model MvcFYP.ViewModels.TopicViewModel
+@{
+    ViewBag.Title = "Home Page";
+
+    //if (Session["userID"] == null)
+    //{
+    //    Response.Redirect("~/Login/Index");
+    //}
+}
+
+@{
+    if (Session["userID"] == null)
+    {
+        <div>
+            <a href="@Url.Action("Index", "Login")">Login</a>
+        </div>
+    }
+}
+
+
+@{
+    if (Session["userID"] != null)
+    {
+        <div>
+            <h2>Username: @Session["userName"].ToString()</h2>
+            <a href="@Url.Action("Logout", "Login")">Logout</a>
+        </div>
+    }
+}
+
+
+@{
+    if (Session["userID"] != null)
+    {
+        <a href="@Url.Action("AddOrEdit", "User")">Create</a>
+    }
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>test</title>
+</head>
+<body>
+
+    @*MODAL CREATE TOPIC*@
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Create Topic
+    </button>
+    <br><br>
+
+    @using (Html.BeginForm("Create", "Topic", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Topic</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Topic.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Topic.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    @*DISPLAY TOPIC AND EXAMPLE*@
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            @foreach (var topic in Model.TopicItems)
+            {
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color: black;">
+                            @Html.DisplayFor(x => topic.Name)
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <ul>
+                            @foreach (var exampleName in topic.Examples)
+                            {
+                                <li>
+                                    <a href=@Url.Action("show", "Example", new { exampleID = exampleName.Id}, null)>
+                                        @Html.DisplayFor(y => exampleName.Name)
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="width: 90%" id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <p class="float-right">
+                        <a href=@Url.Action("Create", "Example", new { topicID = topic.Id}, null)>
+                            <img class="add-button-hover" src="~/Images/Add_button.jpeg" alt="Add Example" title="Add Example" height="40" width="40">
+                        </a>
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+
+</body>
+</html>
+

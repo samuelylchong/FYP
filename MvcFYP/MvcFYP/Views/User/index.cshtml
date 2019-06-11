@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MvcFYP.Models.User>
+@{
+    ViewBag.Title = "index";
+}
+
+<h2>All Users</h2>
+<br><br>
+
+<!DOCTYPE html>
+
+<p>
+    @Html.ActionLink("Create New", "AddOrEdit", "User")
+</p>
+<br>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+    </table>
