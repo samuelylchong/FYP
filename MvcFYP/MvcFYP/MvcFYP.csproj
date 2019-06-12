@@ -54,6 +54,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcPaging, Version=2.1.13.46, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcPaging.2.1.13\lib\net40\MvcPaging.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -142,6 +145,7 @@
     <Compile Include="Models\Example.cs">
       <DependentUpon>FYP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExampleMetaData.cs" />
     <Compile Include="Models\Exercis.cs">
       <DependentUpon>FYP.tt</DependentUpon>
     </Compile>
@@ -184,7 +188,39 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="hint\demo.html" />
+    <Content Include="hint\Gruntfile.js" />
+    <Content Include="hint\hint.base.css" />
+    <Content Include="hint\hint.base.min.css" />
+    <Content Include="hint\hint.css" />
+    <Content Include="hint\hint.min.css" />
     <Content Include="Images\Add_button.jpeg" />
+    <Content Include="Images\title_image.png" />
+    <Content Include="jquery.easyPaginate-master\demo\css\bootstrap.css" />
+    <Content Include="jquery.easyPaginate-master\demo\css\bootstrap.min.css" />
+    <Content Include="jquery.easyPaginate-master\demo\css\jquery.snippet.min.css" />
+    <Content Include="jquery.easyPaginate-master\demo\css\styles.css" />
+    <Content Include="jquery.easyPaginate-master\demo\img\chrome-16.png" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf1.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf2.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf3.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf4.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf5.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf6.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf7.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf8.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\demo\surf9.jpg" />
+    <Content Include="jquery.easyPaginate-master\demo\img\firefox-16.png" />
+    <Content Include="jquery.easyPaginate-master\demo\img\glyphicons-halflings-white.png" />
+    <Content Include="jquery.easyPaginate-master\demo\img\glyphicons-halflings.png" />
+    <Content Include="jquery.easyPaginate-master\demo\img\opera-16.png" />
+    <Content Include="jquery.easyPaginate-master\demo\img\safari-16.png" />
+    <Content Include="jquery.easyPaginate-master\demo\index.html" />
+    <Content Include="jquery.easyPaginate-master\demo\js\bootstrap.js" />
+    <Content Include="jquery.easyPaginate-master\demo\js\bootstrap.min.js" />
+    <Content Include="jquery.easyPaginate-master\demo\js\jquery.snippet.min.js" />
+    <Content Include="jquery.easyPaginate-master\demo\js\scripts.js" />
+    <Content Include="jquery.easyPaginate-master\lib\jquery.easyPaginate.js" />
     <Content Include="Login_v2\css\main.css" />
     <Content Include="Login_v2\css\util.css" />
     <Content Include="Login_v2\fonts\font-awesome-4.7.0\css\font-awesome.css" />
@@ -430,6 +466,33 @@
     <Content Include="Login_v2\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
     <Content Include="Login_v2\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="Login_v2\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="jquery.easyPaginate-master\.gitignore" />
+    <Content Include="jquery.easyPaginate-master\bower.json" />
+    <Content Include="jquery.easyPaginate-master\LICENSE" />
+    <Content Include="jquery.easyPaginate-master\package.json" />
+    <Content Include="jquery.easyPaginate-master\README.md" />
+    <Content Include="hint\.editorconfig" />
+    <Content Include="hint\.gitignore" />
+    <Content Include="hint\.prettierignore" />
+    <Content Include="hint\bower.json" />
+    <Content Include="hint\component.json" />
+    <Content Include="hint\CONTRIBUTING.md" />
+    <Content Include="hint\LICENSE.md" />
+    <Content Include="hint\package-lock.json" />
+    <Content Include="hint\package.json" />
+    <Content Include="hint\README.md" />
+    <Content Include="hint\src\hint-always.scss" />
+    <Content Include="hint\src\hint-color-types.scss" />
+    <Content Include="hint\src\hint-core.scss" />
+    <Content Include="hint\src\hint-effects.scss" />
+    <Content Include="hint\src\hint-mixins.scss" />
+    <Content Include="hint\src\hint-position.scss" />
+    <Content Include="hint\src\hint-rounded.scss" />
+    <Content Include="hint\src\hint-sizes.scss" />
+    <Content Include="hint\src\hint-theme.scss" />
+    <Content Include="hint\src\hint-variables.scss" />
+    <Content Include="hint\src\hint.base.scss" />
+    <Content Include="hint\src\hint.scss" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance-mobile.css" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance.css" />
@@ -494,7 +557,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Example\show.cshtml" />
+    <Content Include="Views\Example\Show.cshtml" />
     <Content Include="Views\Exercise\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>

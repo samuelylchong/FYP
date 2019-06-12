@@ -39,7 +39,7 @@ namespace MvcFYP.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        public ActionResult show(int exampleID)
+        public ActionResult Show(int exampleID)
         {
             ExampleViewModel exampleVM = new ExampleViewModel();
 

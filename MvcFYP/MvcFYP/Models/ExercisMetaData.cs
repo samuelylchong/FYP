@@ -22,7 +22,7 @@ namespace MvcFYP.Models
 
         public Exercis()
         {
-            SelectionLists = new List<string>();
+            //SelectionLists = new List<string>();
         }
     }
 }

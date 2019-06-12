@@ -11,8 +11,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Question" Type="varchar" MaxLength="200" />
-          <Property Name="Answer" Type="text" Nullable="false" />
+          <Property Name="Question" Type="varchar(max)" />
+          <Property Name="Answer" Type="text" />
           <Property Name="TopicID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Exercises">
@@ -20,9 +20,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Question" Type="varchar" MaxLength="100" />
+          <Property Name="Question" Type="varchar(max)" />
           <Property Name="SelectionList" Type="varchar" MaxLength="200" />
-          <Property Name="FinalAnswer" Type="varchar" MaxLength="200" />
+          <Property Name="FinalAnswer" Type="varchar(max)" />
           <Property Name="Hint" Type="varchar" MaxLength="255" />
           <Property Name="ExampleID" Type="int" Nullable="false" />
         </EntityType>
@@ -104,8 +104,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Question" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Answer" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TopicID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Topic" Relationship="FYPModel.FK_Examples_Topics" FromRole="Example" ToRole="Topic" />
           <NavigationProperty Name="Exercises" Relationship="FYPModel.FK_Exercises_Examples" FromRole="Example" ToRole="Exercis" />
@@ -115,9 +115,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Question" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="SelectionList" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="FinalAnswer" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FinalAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Hint" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ExampleID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Example" Relationship="FYPModel.FK_Exercises_Examples" FromRole="Exercis" ToRole="Example" />

@@ -8,14 +8,15 @@
     //}
 }
 
-@{
+@*LOGIN*@
+@*@{
     if (Session["userID"] == null)
     {
         <div>
             <a href="@Url.Action("Index", "Login")">Login</a>
         </div>
     }
-}
+}*@
 
 
 @{
@@ -45,10 +46,11 @@
     <title>test</title>
 </head>
 <body>
+    <br><br>
 
     @*MODAL CREATE TOPIC*@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Create Topic
+        Add Topic
     </button>
     <br><br>
 
@@ -84,19 +86,20 @@
 
 
     @*DISPLAY TOPIC AND EXAMPLE*@
+    @{int i = 1;}
     <div class="accordion" id="accordionExample">
         <div class="card">
             @foreach (var topic in Model.TopicItems)
             {
-                <div class="card-header" id="headingOne">
+                <div class="card-header" id="heading@(i)">
                     <h5 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color: black;">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)" style="color: black;">
                             @Html.DisplayFor(x => topic.Name)
                         </button>
                     </h5>
                 </div>
 
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div id="collapse@(i)" class="collapse" aria-labelledby="heading@(i)" data-parent="#accordionExample">
                     <div class="card-body">
                         <ul>
                             @foreach (var exampleName in topic.Examples)
@@ -108,20 +111,17 @@
                                 </li>
                             }
                         </ul>
+                        <p class="float-right">
+                            <a href=@Url.Action("Create", "Example", new { topicID = topic.Id}, null)>
+                                <img class="add-button-hover" src="~/Images/Add_button.jpeg" alt="Add Example" title="Add Example" height="40" width="40">
+                            </a>
+                        </p>
                     </div>
                 </div>
-
-                <div style="width: 90%" id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <p class="float-right">
-                        <a href=@Url.Action("Create", "Example", new { topicID = topic.Id}, null)>
-                            <img class="add-button-hover" src="~/Images/Add_button.jpeg" alt="Add Example" title="Add Example" height="40" width="40">
-                        </a>
-                    </p>
-                </div>
+                i++;
             }
         </div>
     </div>
 
 </body>
 </html>
-
