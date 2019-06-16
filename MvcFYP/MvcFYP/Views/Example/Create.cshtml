@@ -5,7 +5,7 @@
 }
 
 <br><br>
-<h2>Add New Example</h2>
+<h2>New Example</h2>
 
 <script src="~/Scripts/codemirror-2.37/lib/codemirror.js"></script>
 <link href="~/Scripts/codemirror-2.37/lib/codemirror.css" rel="stylesheet" />
@@ -33,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Example.Question, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Example.Question, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Example.Question, new { @class = "textarea-size", @cols = 200, @rows = 4 })
                 @Html.ValidationMessageFor(model => model.Example.Question, "", new { @class = "text-danger" })
             </div>
         </div>

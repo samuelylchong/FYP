@@ -36,7 +36,7 @@ namespace MvcFYP.Controllers
             db.Exercises.Add(exerciseVM.Exercise);
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Home", new { area = "" });
+            return RedirectToAction("Show", "Example", new { exampleID = exerciseVM.Exercise.ExampleID });
         }
     }
 }

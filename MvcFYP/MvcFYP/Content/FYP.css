@@ -40,3 +40,10 @@
     margin-left: 40%;
 }
 
+.textarea-size {
+    max-width: 500px !important;
+}
+
+.textarea-size2 {
+    max-width: 300px !important;
+}
