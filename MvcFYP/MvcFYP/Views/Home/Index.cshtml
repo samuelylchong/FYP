@@ -10,13 +10,13 @@
 
 @*LOGIN*@
 @*@{
-    if (Session["userID"] == null)
-    {
-        <div>
-            <a href="@Url.Action("Index", "Login")">Login</a>
-        </div>
-    }
-}*@
+        if (Session["userID"] == null)
+        {
+            <div>
+                <a href="@Url.Action("Index", "Login")">Login</a>
+            </div>
+        }
+    }*@
 
 
 @{
@@ -37,6 +37,20 @@
     }
 }
 
+@*NOT AUTHORIZED*@
+@{
+    if (Session["userID"] == null)
+    {
+        <script>
+            $(document).ready(function () {
+                alert('Not Authorized');
+                window.location.href = "Login/Index";
+            });
+        </script>
+        //Response.Redirect("~/Login/Index");
+    }
+}
+
 
 <!DOCTYPE html>
 
@@ -48,11 +62,17 @@
 <body>
     <br><br>
 
-    @*MODAL CREATE TOPIC*@
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Add Topic
-    </button>
-    <br><br>
+    @{
+        if ((string)Session["role"] == "Lecturer")
+        {
+            @*MODAL CREATE TOPIC*@
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Add Topic
+            </button>
+            <br><br>
+        }
+    }
+
 
     @using (Html.BeginForm("Create", "Topic", FormMethod.Post))
     {
@@ -111,11 +131,17 @@
                                 </li>
                             }
                         </ul>
-                        <p class="float-right">
-                            <a href=@Url.Action("Create", "Example", new { topicID = topic.Id}, null)>
-                                <img class="add-button-hover" src="~/Images/Add_button.jpeg" alt="Add Example" title="Add Example" height="40" width="40">
-                            </a>
-                        </p>
+
+                        @{
+                            if ((string)Session["role"] == "Lecturer")
+                            {
+                                <p class="float-right">
+                                    <a href=@Url.Action("Create", "Example", new { topicID = topic.Id}, null)>
+                                        <img class="add-button-hover" src="~/Images/Add_button.jpeg" alt="Add Example" title="Add Example" height="40" width="40">
+                                    </a>
+                                </p>
+                            }
+                        }
                     </div>
                 </div>
                 i++;

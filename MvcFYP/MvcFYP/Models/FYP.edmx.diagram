@@ -7,10 +7,13 @@
       <Diagram DiagramId="d2c3ade705204054ac10150689e83f6a" Name="Diagram1">
         <EntityTypeShape EntityType="FYPModel.Example" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="FYPModel.Exercis" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="FYPModel.StudentRecord" Width="1.5" PointX="7.5" PointY="1" />
         <EntityTypeShape EntityType="FYPModel.Topic" Width="1.5" PointX="0.75" PointY="1.375" />
-        <EntityTypeShape EntityType="FYPModel.User" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="FYPModel.User" Width="1.5" PointX="5.25" PointY="5.125" />
         <AssociationConnector Association="FYPModel.FK_Examples_Topics" />
         <AssociationConnector Association="FYPModel.FK_Exercises_Examples" />
+        <AssociationConnector Association="FYPModel.FK_StudentRecords_Exercises" />
+        <AssociationConnector Association="FYPModel.FK_StudentRecords_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -9,5 +9,6 @@ namespace MvcFYP.ViewModels
     public class ExampleViewModel
     {
         public Example Example { get; set; }
+        public StudentRecord StudentRecord { get; set; }
     }
 }

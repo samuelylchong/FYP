@@ -31,6 +31,7 @@ namespace MvcFYP.Controllers
                 {
                     Session["userID"] = userDetails.Id;
                     Session["userName"] = userDetails.Username;
+                    Session["role"] = userDetails.Role;
                     return RedirectToAction("Index", "Home");
                 }
             }

@@ -165,6 +165,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FYP.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentRecord.cs">
+      <DependentUpon>FYP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StudentRecordMetaData.cs" />
     <Compile Include="Models\Topic.cs">
       <DependentUpon>FYP.tt</DependentUpon>
     </Compile>

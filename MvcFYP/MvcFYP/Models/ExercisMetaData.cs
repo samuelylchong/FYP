@@ -19,10 +19,8 @@ namespace MvcFYP.Models
         }
 
         public List<string> SelectionLists { get; set; }
+        public bool IsDone { get; set; }
+        public bool IsCorrect { get; set; }
 
-        public Exercis()
-        {
-            //SelectionLists = new List<string>();
-        }
     }
 }

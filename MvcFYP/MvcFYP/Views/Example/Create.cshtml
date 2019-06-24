@@ -4,6 +4,19 @@
     ViewBag.Title = "Create";
 }
 
+@{
+    if (Session["userID"] == null || (string)Session["role"] != "Lecturer")
+    {
+        <script>
+            $(document).ready(function () {
+                alert('Not Authorized');
+                window.location.href = "../Login/Index";
+            });
+        </script>
+        //Response.Redirect("~/Login/Index");
+    }
+}
+
 <br><br>
 <h2>New Example</h2>
 

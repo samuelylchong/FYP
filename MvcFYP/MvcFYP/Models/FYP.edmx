@@ -26,6 +26,16 @@
           <Property Name="Hint" Type="varchar" MaxLength="255" />
           <Property Name="ExampleID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="StudentRecords">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ExerciseID" Type="int" Nullable="false" />
+          <Property Name="Answer" Type="varchar(max)" Nullable="false" />
+          <Property Name="Result" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Topics">
           <Key>
             <PropertyRef Name="Id" />
@@ -41,6 +51,7 @@
           <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Examples_Topics">
           <End Role="Topics" Type="Self.Topics" Multiplicity="1" />
@@ -66,9 +77,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StudentRecords_Exercises">
+          <End Role="Exercises" Type="Self.Exercises" Multiplicity="1" />
+          <End Role="StudentRecords" Type="Self.StudentRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exercises">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentRecords">
+              <PropertyRef Name="ExerciseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentRecords_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="StudentRecords" Type="Self.StudentRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentRecords">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FYPModelStoreContainer">
           <EntitySet Name="Examples" EntityType="Self.Examples" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Exercises" EntityType="Self.Exercises" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentRecords" EntityType="Self.StudentRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Topics" EntityType="Self.Topics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Examples_Topics" Association="Self.FK_Examples_Topics">
@@ -79,6 +115,14 @@
             <End Role="Examples" EntitySet="Examples" />
             <End Role="Exercises" EntitySet="Exercises" />
           </AssociationSet>
+          <AssociationSet Name="FK_StudentRecords_Exercises" Association="Self.FK_StudentRecords_Exercises">
+            <End Role="Exercises" EntitySet="Exercises" />
+            <End Role="StudentRecords" EntitySet="StudentRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentRecords_User" Association="Self.FK_StudentRecords_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="StudentRecords" EntitySet="StudentRecords" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -87,6 +131,7 @@
         <EntityContainer Name="FYPEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Examples" EntityType="FYPModel.Example" />
           <EntitySet Name="Exercises" EntityType="FYPModel.Exercis" />
+          <EntitySet Name="StudentRecords" EntityType="FYPModel.StudentRecord" />
           <EntitySet Name="Topics" EntityType="FYPModel.Topic" />
           <EntitySet Name="Users" EntityType="FYPModel.User" />
           <AssociationSet Name="FK_Examples_Topics" Association="FYPModel.FK_Examples_Topics">
@@ -96,6 +141,14 @@
           <AssociationSet Name="FK_Exercises_Examples" Association="FYPModel.FK_Exercises_Examples">
             <End Role="Example" EntitySet="Examples" />
             <End Role="Exercis" EntitySet="Exercises" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentRecords_Exercises" Association="FYPModel.FK_StudentRecords_Exercises">
+            <End Role="Exercis" EntitySet="Exercises" />
+            <End Role="StudentRecord" EntitySet="StudentRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentRecords_User" Association="FYPModel.FK_StudentRecords_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="StudentRecord" EntitySet="StudentRecords" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Example">
@@ -121,6 +174,19 @@
           <Property Name="Hint" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ExampleID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Example" Relationship="FYPModel.FK_Exercises_Examples" FromRole="Exercis" ToRole="Example" />
+          <NavigationProperty Name="StudentRecords" Relationship="FYPModel.FK_StudentRecords_Exercises" FromRole="Exercis" ToRole="StudentRecord" />
+        </EntityType>
+        <EntityType Name="StudentRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ExerciseID" Type="Int32" Nullable="false" />
+          <Property Name="Answer" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Result" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Exercis" Relationship="FYPModel.FK_StudentRecords_Exercises" FromRole="StudentRecord" ToRole="Exercis" />
+          <NavigationProperty Name="User" Relationship="FYPModel.FK_StudentRecords_User" FromRole="StudentRecord" ToRole="User" />
         </EntityType>
         <EntityType Name="Topic">
           <Key>
@@ -138,6 +204,8 @@
           <Property Name="Username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="StudentRecords" Relationship="FYPModel.FK_StudentRecords_User" FromRole="User" ToRole="StudentRecord" />
         </EntityType>
         <Association Name="FK_Examples_Topics">
           <End Type="FYPModel.Topic" Role="Topic" Multiplicity="1" />
@@ -160,6 +228,30 @@
             </Principal>
             <Dependent Role="Exercis">
               <PropertyRef Name="ExampleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentRecords_Exercises">
+          <End Type="FYPModel.Exercis" Role="Exercis" Multiplicity="1" />
+          <End Type="FYPModel.StudentRecord" Role="StudentRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exercis">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentRecord">
+              <PropertyRef Name="ExerciseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentRecords_User">
+          <End Type="FYPModel.User" Role="User" Multiplicity="1" />
+          <End Type="FYPModel.StudentRecord" Role="StudentRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentRecord">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -192,6 +284,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="StudentRecords">
+            <EntityTypeMapping TypeName="FYPModel.StudentRecord">
+              <MappingFragment StoreEntitySet="StudentRecords">
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="ExerciseID" ColumnName="ExerciseID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Topics">
             <EntityTypeMapping TypeName="FYPModel.Topic">
               <MappingFragment StoreEntitySet="Topics">
@@ -203,6 +306,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="FYPModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />

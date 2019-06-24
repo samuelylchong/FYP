@@ -54,7 +54,7 @@ namespace MvcFYP.Controllers
             smtp.Send(msg);
 
             ModelState.Clear();
-            ViewBag.SuccessMessage = "Registration Successful.";
+            ViewBag.SuccessMessage = "Registration Successful!";
             return View("AddOrEdit", new User());
         }
 

@@ -40,10 +40,14 @@
     margin-left: 40%;
 }
 
-.textarea-size {
+.fontSize-medium{
+    font-size: 21px;
+}
+
+/*.textarea-size {
     max-width: 500px !important;
 }
 
 .textarea-size2 {
     max-width: 300px !important;
-}
+}*/

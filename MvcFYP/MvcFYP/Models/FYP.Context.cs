@@ -27,6 +27,7 @@ namespace MvcFYP.Models
     
         public virtual DbSet<Example> Examples { get; set; }
         public virtual DbSet<Exercis> Exercises { get; set; }
+        public virtual DbSet<StudentRecord> StudentRecords { get; set; }
         public virtual DbSet<Topic> Topics { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }

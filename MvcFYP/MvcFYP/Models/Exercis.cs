@@ -14,6 +14,12 @@ namespace MvcFYP.Models
     
     public partial class Exercis
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Exercis()
+        {
+            this.StudentRecords = new HashSet<StudentRecord>();
+        }
+    
         public int Id { get; set; }
         public string Question { get; set; }
         public string SelectionList { get; set; }
@@ -22,5 +28,7 @@ namespace MvcFYP.Models
         public int ExampleID { get; set; }
     
         public virtual Example Example { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StudentRecord> StudentRecords { get; set; }
     }
 }
