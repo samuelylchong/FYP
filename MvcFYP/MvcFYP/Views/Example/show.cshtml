@@ -68,7 +68,7 @@
                 @Html.TextAreaFor(model => model.Example.Answer, new { id = "codeEditor" })
             </div>
         </div>
-
+       
         <script>
             var editor = CodeMirror.fromTextArea
                 (document.getElementById('codeEditor'), {
@@ -83,7 +83,7 @@
     </div>
 
     @*DISPLAY EXERCISES*@
-    <div class="float-right" margin-left: -50%;">
+    <div class="float-right">
         <fieldset>
             <br>
             <h3>Exercises</h3>
@@ -96,12 +96,9 @@
                 {
                 <section style="width: 150%">
                     <div>
-                        @*@Html.DisplayFor(x => exercise.IsDone)
-            @Html.DisplayFor(x => exercise.IsCorrect)*@
+                        <p class="fontSize-medium" >Question @(count))</p>
 
-                        <p>Question @(count))</p>
-
-                        <p>@Html.DisplayFor(x => exercise.Question)</p>
+                        <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
                     </div>
 
                     @*LOOP SELECTIONLISTS AND SUBMIT STUDENT ANSWER*@
@@ -112,9 +109,7 @@
                             foreach (var selection in exercise.SelectionLists)
                             {
 
-                                @Html.RadioButtonFor(x => x.StudentRecord.Answer, selection) @Html.DisplayFor(y => selection)
-                                <br>
-
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, selection)   @Html.DisplayFor(y => selection)</p>
                                 i++;
                             }
                         }
@@ -123,7 +118,7 @@
                         @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
 
 
-                        <br /><br>
+                        <br />
                         @*HINT*@
                         <div style="width: 40%" class="clearfix">
                             <button type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
@@ -155,6 +150,7 @@
                 }
             </div>
         </fieldset>
+        <div class="verticalLine"></div>
     </div>
 </div>
 

@@ -49,6 +49,8 @@
 
         <div class="form-group">
             <div class="col-md-10">
+                @Html.RadioButtonFor(x => x.Role, "Admin") Admin
+                <br />
                 @Html.RadioButtonFor(x => x.Role, "Lecturer") Lecturer
                 <br>
                 @Html.RadioButtonFor(x => x.Role, "Student") Student

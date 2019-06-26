@@ -13,6 +13,8 @@ namespace MvcFYP.Models
         {
             public string Answer { get; set; }
             public string Result { get; set; }
+            [DataType(DataType.Date)]
+            public string Date { get; set; }
         }
 
     }

@@ -22,18 +22,10 @@
 @{
     if (Session["userID"] != null)
     {
+        <br>
         <div>
-            <h2>Username: @Session["userName"].ToString()</h2>
-            <a href="@Url.Action("Logout", "Login")">Logout</a>
+            <h2>Welcome @Session["userName"].ToString()</h2>
         </div>
-    }
-}
-
-
-@{
-    if (Session["userID"] != null)
-    {
-        <a href="@Url.Action("AddOrEdit", "User")">Create</a>
     }
 }
 

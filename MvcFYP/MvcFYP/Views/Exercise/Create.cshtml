@@ -56,7 +56,6 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Exercise.SelectionList, htmlAttributes: new { @class = "control-label col-md-2" })
-            <p class="float-right text-info" style="margin-right: 55%;">(Optional) If the answer has multiple choice!</p>
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.Exercise.SelectionList, new { @class = "textarea-size2", @placeholder = "E.g. Answer1,Answer2,Answer3,Answer4", @cols = 100, @rows = 4 })
                 @Html.ValidationMessageFor(model => model.Exercise.SelectionList, "", new { @class = "text-danger" })

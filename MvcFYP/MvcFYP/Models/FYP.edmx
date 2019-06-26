@@ -35,6 +35,7 @@
           <Property Name="ExerciseID" Type="int" Nullable="false" />
           <Property Name="Answer" Type="varchar(max)" Nullable="false" />
           <Property Name="Result" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Date" Type="date" />
         </EntityType>
         <EntityType Name="Topics">
           <Key>
@@ -185,6 +186,7 @@
           <Property Name="ExerciseID" Type="Int32" Nullable="false" />
           <Property Name="Answer" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Result" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Exercis" Relationship="FYPModel.FK_StudentRecords_Exercises" FromRole="StudentRecord" ToRole="Exercis" />
           <NavigationProperty Name="User" Relationship="FYPModel.FK_StudentRecords_User" FromRole="StudentRecord" ToRole="User" />
         </EntityType>
@@ -287,6 +289,7 @@
           <EntitySetMapping Name="StudentRecords">
             <EntityTypeMapping TypeName="FYPModel.StudentRecord">
               <MappingFragment StoreEntitySet="StudentRecords">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Result" ColumnName="Result" />
                 <ScalarProperty Name="Answer" ColumnName="Answer" />
                 <ScalarProperty Name="ExerciseID" ColumnName="ExerciseID" />

@@ -1,0 +1,94 @@
+﻿@model MvcFYP.ViewModels.ActivityViewModel
+
+@{
+    if (Session["userID"] == null)
+    {
+        <script>
+            $(document).ready(function () {
+                alert('Not Authorized');
+                window.location.href = "Login/Index";
+            });
+        </script>
+        //Response.Redirect("~/Login/Index");
+    }
+}
+
+<br>
+<h2>Recent Activities</h2>
+<br>
+
+<div>
+    @using (Html.BeginForm("Search", "Activity", FormMethod.Post))
+    {
+        @Html.EditorFor(model => model.Search, new { htmlAttributes = new { placeholder = "User name" } })
+        <input type="submit" value="Filter" class="btn btn-dark" style="margin-left: 5%"/>
+    }
+</div>
+
+<br>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.User.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.Exercis.Question)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.Answer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.Result)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.Date)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.StudentRecordItems)
+    {
+        if (item.Result == "Correct")
+        {
+            <tr style="background-color: lightgreen">
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exercis.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Answer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr style="background-color: lightcoral">
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exercis.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Answer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+        }
+
+
+    }
+
+</table>
