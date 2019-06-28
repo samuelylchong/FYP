@@ -20,9 +20,7 @@
 @*CODE MIRROR*@
 <script src="~/Scripts/codemirror-2.37/lib/codemirror.js"></script>
 <link href="~/Scripts/codemirror-2.37/lib/codemirror.css" rel="stylesheet" />
-<link href="~/Scripts/codemirror-2.37/theme/twilight.css" rel="stylesheet" />
 <script src="~/Scripts/codemirror-2.37/mode/clike/clike.js"></script>
-
 
 @*EASY PAGINATE*@
 <link href="~/jquery.easyPaginate-master/demo/css/jquery.snippet.min.css" rel="stylesheet" />
@@ -47,7 +45,7 @@
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="@Url.Action("Create", "Exercise",  new { exampleID = Model.Example.Id}, null)">Add Exercise</a>
-                    <a class="dropdown-item" href="#">Edit Example</a>
+                    <a class="dropdown-item" href="@Url.Action("Edit", "Example",  new { exampleID = Model.Example.Id}, null)">Edit Example</a>
                 </div>
             </div>
         </div>
@@ -56,104 +54,94 @@
 
 
 @*DISPLAY EXAMPLE*@
-<h2 class="text-center">@Html.DisplayFor(model => model.Example.Name, new { @class = "control-label col-md-2" })</h2>
+<h2 class="" style="width: 70%">@Html.DisplayFor(model => model.Example.Name, new { @class = "control-label col-md-2" })</h2>
 <br><br>
 
-<div class="clearfix" style="width: 95%">
-    <div class="float-left" style="width: 60%; margin-left: -10%">
-        <p class="fontSize-medium" style="width: 115%">Question: @Html.DisplayFor(model => model.Example.Question, new { @class = "control-label col-md-2" })</p><br>
+    <div class="clearfix" style="width: 95%">
+        <div class="float-left" style="width: 60%; margin-left: -10%">
+            <p class="fontSize-medium" style="width: 115%">Question: @Html.DisplayFor(model => model.Example.Question, new { @class = "control-label col-md-2" })</p><br>
 
-        <div class="form-group">
-            <div class="col-md-10" style="font-size: 17px; margin-left: -2%;">
-                @Html.TextAreaFor(model => model.Example.Answer, new { id = "codeEditor" })
+            <div class="form-group">
+                <div class="col-md-10" style="font-size: 17px; margin-left: -2%;">
+                    @Html.TextAreaFor(model => model.Example.Answer, new { id = "codeEditor" })
+                </div>
             </div>
+
+            <script>
+                var editor = CodeMirror.fromTextArea
+                    (document.getElementById('codeEditor'), {
+                        lineNumbers: true,
+                        mode: "clike",
+                        readOnly: true,
+                    });
+                editor.setSize(740, 600);
+            </script>
+            <br>
         </div>
-       
-        <script>
-            var editor = CodeMirror.fromTextArea
-                (document.getElementById('codeEditor'), {
-                    lineNumbers: true,
-                    theme: "twilight",
-                    mode: "clike",
-                    readOnly: true,
-                });
-            editor.setSize(740, 600);
-        </script>
-        <br>
-    </div>
 
-    @*DISPLAY EXERCISES*@
-    <div class="float-right">
-        <fieldset>
-            <br>
-            <h3>Exercises</h3>
-            <br>
-            <div id="easyPaginate">
-                @{int i = 1;}
-                @{int count = 1;}
-                @*LOOP EXERCISES*@
-                @foreach (var exercise in Model.Example.Exercises)
-                {
-                <section style="width: 150%">
-                    <div>
-                        <p class="fontSize-medium" >Question @(count))</p>
-
-                        <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
-                    </div>
-
-                    @*LOOP SELECTIONLISTS AND SUBMIT STUDENT ANSWER*@
-                    @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
+        @*DISPLAY EXERCISES*@
+        <div class="float-right">
+            <fieldset>
+                <br>
+                <h3>Exercises</h3>
+                <br>
+                <div id="easyPaginate">
+                    @{int count = 1;}
+                    @*LOOP EXERCISES*@
+                    @foreach (var exercise in Model.Example.Exercises)
                     {
-                        if (exercise.SelectionLists != null)
-                        {
-                            foreach (var selection in exercise.SelectionLists)
-                            {
+                    <section style="width: 150%">
+                        <div>
+                            <p class="fontSize-medium">Question @(count))</p>
 
-                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, selection)   @Html.DisplayFor(y => selection)</p>
-                                i++;
+                            <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
+                        </div>
+
+                        @*LOOP SELECTIONLISTS AND SUBMIT STUDENT ANSWER*@
+                        @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
+                        {
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
+
+                            //ASSIGN VALUE TO StudentRecord.ExerciseID
+                            @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
+
+
+                            <br />
+                            @*HINT*@
+                            <div style="width: 40%" class="clearfix">
+                                <button type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
+
+                                @if (exercise.IsDone)
+                                {
+                                    <a class="status-icon  hint--top-left  hint--info" style="background:lightblue; margin-left: 10%" aria-label="@Html.DisplayFor(x => exercise.Hint)">
+                                        <svg style="width:30px;height:40px" viewBox="0 0 24 24">
+                                            <path fill="#ffffff" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z"></path>
+                                        </svg>
+                                    </a>
+                                }
+                            </div><br>
+
+                            if (exercise.IsDone && exercise.IsCorrect)
+                            {
+                                <p class="text-success">Correct Answer. Proceed to the next question</p>
+                            }
+                            else if (exercise.IsDone && exercise.IsCorrect == false)
+                            {
+                                <p class="text-danger">Wrong answer! Please try again</p>
                             }
                         }
-
-                        //ASSIGN VALUE TO StudentRecord.ExerciseID
-                        @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
-
-
-                        <br />
-                        @*HINT*@
-                        <div style="width: 40%" class="clearfix">
-                            <button type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
-
-                            @if (exercise.IsDone)
-                            {
-                                <a class="status-icon  hint--top-left  hint--info" style="background:lightblue; margin-left: 10%" aria-label="@Html.DisplayFor(x => exercise.Hint)">
-                                    <svg style="width:30px;height:40px" viewBox="0 0 24 24">
-                                        <path fill="#ffffff" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z"></path>
-                                    </svg>
-                                </a>
-                            }
-                        </div><br>
-
-                        if (exercise.IsDone && exercise.IsCorrect)
-                        {
-                            <p class="text-success">Correct Answer. Proceed to the next question</p>
-                        }
-                        else if (exercise.IsDone && exercise.IsCorrect == false)
-                        {
-                            <p class="text-danger">Wrong answer! Please try again</p>
-                            
-                        }
+                        <br>
+                    </section>
+                        count++;
                     }
-
-                    <br>
-                </section>
-                    count++;
-                }
-            </div>
-        </fieldset>
+                </div>
+            </fieldset>
+        </div>
         <div class="verticalLine"></div>
     </div>
-</div>
-
 
 <script>
     $('#easyPaginate').easyPaginate({

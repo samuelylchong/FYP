@@ -26,6 +26,7 @@ namespace MvcFYP.Controllers
             };
 
             exerciseVM.Exercise.ExampleID = exampleID;
+            exerciseVM.Exercise.Example = db.Examples.SingleOrDefault(x => x.Id == exampleID);
 
             return View(exerciseVM);
         }

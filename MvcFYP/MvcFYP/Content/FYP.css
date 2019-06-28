@@ -50,7 +50,7 @@
 
 .verticalLine {
     border-left: 2px solid lightgrey;
-    height: 710px;
-    margin-left: -20%;
-    margin-top: -165%;
+    height: 740px;
+    margin-left: 45%;
+    position: absolute;
 }

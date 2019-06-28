@@ -22,9 +22,12 @@ namespace MvcFYP.Models
     
         public int Id { get; set; }
         public string Question { get; set; }
-        public string SelectionList { get; set; }
-        public string FinalAnswer { get; set; }
         public string Hint { get; set; }
+        public string Answer1 { get; set; }
+        public string Answer2 { get; set; }
+        public string Answer3 { get; set; }
+        public string Answer4 { get; set; }
+        public string CorrectAnswer { get; set; }
         public int ExampleID { get; set; }
     
         public virtual Example Example { get; set; }

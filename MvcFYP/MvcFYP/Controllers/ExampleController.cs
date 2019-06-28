@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using MvcFYP.Models;
 using MvcFYP.ViewModels;
+using System.Data.Entity;
+using System.Reflection;
 
 namespace MvcFYP.Controllers
 {
@@ -53,11 +55,6 @@ namespace MvcFYP.Controllers
 
             foreach(var exercise in exampleVM.Example.Exercises)
             {
-                if (exercise.SelectionList != null)
-                {
-                    exercise.SelectionLists = exercise.SelectionList.Split(';').ToList();
-                }
-
                 if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id))
                 {
                     exercise.IsDone = true;
@@ -86,12 +83,29 @@ namespace MvcFYP.Controllers
         {
             bool checkExist = false;
             bool checkExist2 = false;
+            string checkAnswer = "";
 
             exampleVM.StudentRecord.UserID = (int)Session["userID"];
             var exercise = db.Exercises.SingleOrDefault(y => y.Id == exampleVM.StudentRecord.ExerciseID);
             Exercis ex = exercise;
 
-            if (exampleVM.StudentRecord.Answer == ex.FinalAnswer)
+            if(ex.CorrectAnswer == "Answer1")
+            {
+                checkAnswer = ex.Answer1;
+            } else if(ex.CorrectAnswer == "Answer2")
+            {
+                checkAnswer = ex.Answer2;
+            }
+            else if (ex.CorrectAnswer == "Answer3")
+            {
+                checkAnswer = ex.Answer3;
+            }
+            else if (ex.CorrectAnswer == "Answer4")
+            {
+                checkAnswer = ex.Answer4;
+            }
+
+            if (exampleVM.StudentRecord.Answer == checkAnswer)
             {
                 exampleVM.StudentRecord.Result = "Correct";
             }
@@ -104,7 +118,7 @@ namespace MvcFYP.Controllers
 
             //check if record exists
             checkExist = db.StudentRecords.Any(x => x.UserID == exampleVM.StudentRecord.UserID && x.ExerciseID == exampleVM.StudentRecord.ExerciseID && x.Answer == exampleVM.StudentRecord.Answer && x.Result == exampleVM.StudentRecord.Result);
-            
+
             checkExist2 = db.StudentRecords.Any(x => x.UserID == exampleVM.StudentRecord.UserID && x.ExerciseID == exampleVM.StudentRecord.ExerciseID && x.Result == "Correct");
 
             if (checkExist == false && checkExist2 == false)
@@ -114,6 +128,31 @@ namespace MvcFYP.Controllers
             }
 
             return RedirectToAction("Show", "Example", new { exampleID = ex.ExampleID });
+        }
+
+        public ActionResult Edit(int exampleID)
+        {
+            ExampleViewModel exampleVM = new ExampleViewModel();
+            exampleVM.Example = db.Examples.Single(x => x.Id == exampleID);
+
+            return View(exampleVM);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ExampleViewModel exampleVM)
+        {
+            Example example = db.Examples.Single(x => x.Id == exampleVM.Example.Id);
+            example.Name = exampleVM.Example.Name;
+            example.Question = exampleVM.Example.Question;
+            example.Answer = exampleVM.Example.Answer;
+            
+            if(ModelState.IsValid)
+            {
+                db.Entry(example).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Show", "Example", new { exampleID = example.Id});
         }
     }
 }
