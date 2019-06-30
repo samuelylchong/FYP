@@ -108,6 +108,14 @@
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse@(i)" aria-expanded="true" aria-controls="collapse@(i)" style="color: black;">
                             @Html.DisplayFor(x => topic.Name)
                         </button>
+                        @*DELETE*@
+                        <a href=@Url.Action("Delete", "Topic", new { id = topic.Id}, null) onclick="return confirm('Are you sure you want to Delete?')">
+                            <img class="add-button-hover float-right" src="~/Images/Delete_button.png" height="20" width="20" alt="Delete" title="Delete">
+                        </a>
+                        @*EDIT*@
+                        <a href=@Url.Action("Edit", "Topic", new { topicID = topic.Id}, null)>
+                            <img class="add-button-hover float-right" src="~/Images/Edit_button.png" height="20" width="20" alt="Edit" title="Edit">
+                        </a>
                     </h5>
                 </div>
 

@@ -21,6 +21,7 @@
 <script src="~/Scripts/codemirror-2.37/lib/codemirror.js"></script>
 <link href="~/Scripts/codemirror-2.37/lib/codemirror.css" rel="stylesheet" />
 <script src="~/Scripts/codemirror-2.37/mode/clike/clike.js"></script>
+<link href="~/Scripts/codemirror-2.37/theme/eclipse.css" rel="stylesheet" />
 
 @*EASY PAGINATE*@
 <link href="~/jquery.easyPaginate-master/demo/css/jquery.snippet.min.css" rel="stylesheet" />
@@ -46,6 +47,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="@Url.Action("Create", "Exercise",  new { exampleID = Model.Example.Id}, null)">Add Exercise</a>
                     <a class="dropdown-item" href="@Url.Action("Edit", "Example",  new { exampleID = Model.Example.Id}, null)">Edit Example</a>
+                    <a class="dropdown-item" href="@Url.Action("Delete", "Example",  new { id = Model.Example.Id}, null)" onclick="return confirm('Are you sure you want to Delete?')">Delete Example</a>
+                    <a class="dropdown-item" href="@Url.Action("GetRelatedActivity", "Activity",  new { exampleID = Model.Example.Id}, null)">Recent Activities</a>
                 </div>
             </div>
         </div>
@@ -73,6 +76,7 @@
                         lineNumbers: true,
                         mode: "clike",
                         readOnly: true,
+                        theme: "eclipse",
                     });
                 editor.setSize(740, 600);
             </script>
@@ -90,51 +94,54 @@
                     @*LOOP EXERCISES*@
                     @foreach (var exercise in Model.Example.Exercises)
                     {
-                    <section style="width: 150%">
-                        <div>
-                            <p class="fontSize-medium">Question @(count))</p>
+                        <section style="width: 150%">
+                            <div>
+                                <div class="float-right">
+                                    <a href="@Url.Action("Edit", "Exercise",  new { exerciseID = exercise.Id}, null)">Edit  |</a>
+                                    <a href="@Url.Action("Delete", "Exercise",  new { id = exercise.Id}, null)" onclick="return confirm('Are you sure you want to Delete?')"> Delete</a>
+                                </div>
+                                <p class="fontSize-medium">Question @(count))</p>
+                                <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
+                            </div>
 
-                            <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
-                        </div>
+                            @*RADIO BUTTONS AND SUBMIT STUDENT ANSWER*@
+                            @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
+                            {
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
 
-                        @*LOOP SELECTIONLISTS AND SUBMIT STUDENT ANSWER*@
-                        @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
-                        {
-                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
-                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
-                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
-                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
-
-                            //ASSIGN VALUE TO StudentRecord.ExerciseID
-                            @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
+                                //ASSIGN VALUE TO StudentRecord.ExerciseID
+                                @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
 
 
-                            <br />
-                            @*HINT*@
-                            <div style="width: 40%" class="clearfix">
-                                <button type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
+                                <br />
+                                @*HINT*@
+                                <div style="width: 40%" class="clearfix">
+                                    <button type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
 
-                                @if (exercise.IsDone)
+                                    @if (exercise.IsDone)
+                                    {
+                                        <a class="status-icon  hint--top-left  hint--info" style="background:lightblue; margin-left: 10%" aria-label="@Html.DisplayFor(x => exercise.Hint)">
+                                            <svg style="width:30px;height:40px" viewBox="0 0 24 24">
+                                                <path fill="#ffffff" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z"></path>
+                                            </svg>
+                                        </a>
+                                    }
+                                </div><br>
+
+                                if (exercise.IsDone && exercise.IsCorrect)
                                 {
-                                    <a class="status-icon  hint--top-left  hint--info" style="background:lightblue; margin-left: 10%" aria-label="@Html.DisplayFor(x => exercise.Hint)">
-                                        <svg style="width:30px;height:40px" viewBox="0 0 24 24">
-                                            <path fill="#ffffff" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z"></path>
-                                        </svg>
-                                    </a>
+                                    <p class="text-success">Correct Answer. Proceed to the next question</p>
                                 }
-                            </div><br>
-
-                            if (exercise.IsDone && exercise.IsCorrect)
-                            {
-                                <p class="text-success">Correct Answer. Proceed to the next question</p>
+                                else if (exercise.IsDone && exercise.IsCorrect == false)
+                                {
+                                    <p class="text-danger">Wrong answer! Please try again</p>
+                                }
                             }
-                            else if (exercise.IsDone && exercise.IsCorrect == false)
-                            {
-                                <p class="text-danger">Wrong answer! Please try again</p>
-                            }
-                        }
-                        <br>
-                    </section>
+                            <br>
+                        </section>
                         count++;
                     }
                 </div>

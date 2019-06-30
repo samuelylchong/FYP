@@ -23,6 +23,25 @@ namespace MvcFYP.Controllers
             return View(activityVM);
         }
 
+        public ActionResult GetRelatedActivity(int exampleID)
+        {
+            var example = db.Examples.Find(exampleID);
+            ActivityViewModel activityVM = new ActivityViewModel();
+            
+            foreach(var exercise in example.Exercises)
+            {
+                var studentRecords = db.StudentRecords.Where(x => x.ExerciseID == exercise.Id).ToList();
+
+                foreach(var studentRecord in studentRecords)
+                {
+                    activityVM.StudentRecordItems.Add(studentRecord);
+                }
+
+            }
+
+            return View("Index", activityVM);
+        }
+
         [HttpPost]
         public ActionResult Search(ActivityViewModel activityVM)
         {

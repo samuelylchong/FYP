@@ -1,7 +1,7 @@
 ﻿@model MvcFYP.ViewModels.ExerciseViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
 @{
@@ -23,7 +23,7 @@
 <script src="~/Scripts/codemirror-2.37/mode/clike/clike.js"></script>
 
 <br>
-<h2>New Exercise</h2>
+<h2>Edit Exercise</h2>
 <hr>
 <br>
 
@@ -50,6 +50,7 @@
         {
             @Html.HiddenFor(model => model.Exercise.Id)
             @Html.HiddenFor(model => model.Exercise.ExampleID)
+            @Html.HiddenFor(model => model.Exercise.CorrectAnswer)
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
@@ -64,7 +65,6 @@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Exercise.Hint, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <text style="color: deepskyblue; float: right; margin-right: 45%">(Optional)</text>
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Exercise.Hint, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Exercise.Hint, "", new { @class = "text-danger" })
@@ -133,14 +133,13 @@
                 <div class="form-group" style="width:170%">
                     @Html.LabelFor(model => model.Exercise.CorrectAnswer, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10 float-right">
-                        @Html.DropDownListFor(model => model.Exercise.CorrectAnswer, listItems, "-- Select Answer --")
+                        @Html.DropDownListFor(model => model.Exercise.CorrectAnswer, listItems, "-- Select Answer --",  new { disabled = "disabled" })
                     </div>
-                    <p style="font-size: 13px; color: orangered; margin-left: 1.5%;">Note: Correct Answer is not editable after submission. Choose carefully!</p>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Update" class="btn btn-primary" />
                     </div>
                 </div>
             </div>

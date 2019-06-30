@@ -58,7 +58,9 @@
           <Property Name="Role" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Examples_Topics">
-          <End Role="Topics" Type="Self.Topics" Multiplicity="1" />
+          <End Role="Topics" Type="Self.Topics" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Examples" Type="Self.Examples" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Topics">
@@ -70,7 +72,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Exercises_Examples">
-          <End Role="Examples" Type="Self.Examples" Multiplicity="1" />
+          <End Role="Examples" Type="Self.Examples" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Exercises" Type="Self.Exercises" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Examples">
@@ -82,7 +86,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StudentRecords_Exercises">
-          <End Role="Exercises" Type="Self.Exercises" Multiplicity="1" />
+          <End Role="Exercises" Type="Self.Exercises" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="StudentRecords" Type="Self.StudentRecords" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Exercises">
@@ -216,7 +222,9 @@
           <NavigationProperty Name="StudentRecords" Relationship="FYPModel.FK_StudentRecords_User" FromRole="User" ToRole="StudentRecord" />
         </EntityType>
         <Association Name="FK_Examples_Topics">
-          <End Type="FYPModel.Topic" Role="Topic" Multiplicity="1" />
+          <End Type="FYPModel.Topic" Role="Topic" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="FYPModel.Example" Role="Example" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Topic">
@@ -228,7 +236,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Exercises_Examples">
-          <End Type="FYPModel.Example" Role="Example" Multiplicity="1" />
+          <End Type="FYPModel.Example" Role="Example" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="FYPModel.Exercis" Role="Exercis" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Example">
@@ -240,7 +250,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StudentRecords_Exercises">
-          <End Type="FYPModel.Exercis" Role="Exercis" Multiplicity="1" />
+          <End Type="FYPModel.Exercis" Role="Exercis" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="FYPModel.StudentRecord" Role="StudentRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Exercis">

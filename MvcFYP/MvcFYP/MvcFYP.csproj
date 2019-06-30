@@ -201,6 +201,8 @@
     <Content Include="hint\hint.css" />
     <Content Include="hint\hint.min.css" />
     <Content Include="Images\Add_button.jpeg" />
+    <Content Include="Images\Delete_button.png" />
+    <Content Include="Images\Edit_button.png" />
     <Content Include="Images\title_image.png" />
     <Content Include="jquery.easyPaginate-master\demo\css\bootstrap.css" />
     <Content Include="jquery.easyPaginate-master\demo\css\bootstrap.min.css" />
@@ -567,6 +569,8 @@
     <Content Include="Views\Exercise\Create.cshtml" />
     <Content Include="Views\Activity\Index.cshtml" />
     <Content Include="Views\Example\Edit.cshtml" />
+    <Content Include="Views\Exercise\Edit.cshtml" />
+    <Content Include="Views\Topic\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

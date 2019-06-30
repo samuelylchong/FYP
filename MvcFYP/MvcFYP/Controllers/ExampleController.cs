@@ -154,5 +154,15 @@ namespace MvcFYP.Controllers
 
             return RedirectToAction("Show", "Example", new { exampleID = example.Id});
         }
+
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var example = db.Examples.Find(id);
+            db.Examples.Remove(example);
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Home", new { area = "" });
+        }
     }
 }
