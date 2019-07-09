@@ -36,9 +36,12 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ExerciseID" Type="int" Nullable="false" />
-          <Property Name="Answer" Type="varchar(max)" Nullable="false" />
-          <Property Name="Result" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Date" Type="date" />
+          <Property Name="Attempt1" Type="varchar" MaxLength="200" />
+          <Property Name="Attempt2" Type="varchar" MaxLength="200" />
+          <Property Name="Attempt3" Type="varchar" MaxLength="200" />
+          <Property Name="Attempt4" Type="varchar" MaxLength="200" />
+          <Property Name="CorrectAttempt" Type="varchar" MaxLength="50" />
+          <Property Name="Date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Topics">
           <Key>
@@ -196,9 +199,12 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="ExerciseID" Type="Int32" Nullable="false" />
-          <Property Name="Answer" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Result" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Attempt1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Attempt2" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Attempt3" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Attempt4" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CorrectAttempt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Exercis" Relationship="FYPModel.FK_StudentRecords_Exercises" FromRole="StudentRecord" ToRole="Exercis" />
           <NavigationProperty Name="User" Relationship="FYPModel.FK_StudentRecords_User" FromRole="StudentRecord" ToRole="User" />
         </EntityType>
@@ -311,8 +317,11 @@
             <EntityTypeMapping TypeName="FYPModel.StudentRecord">
               <MappingFragment StoreEntitySet="StudentRecords">
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Result" ColumnName="Result" />
-                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CorrectAttempt" ColumnName="CorrectAttempt" />
+                <ScalarProperty Name="Attempt4" ColumnName="Attempt4" />
+                <ScalarProperty Name="Attempt3" ColumnName="Attempt3" />
+                <ScalarProperty Name="Attempt2" ColumnName="Attempt2" />
+                <ScalarProperty Name="Attempt1" ColumnName="Attempt1" />
                 <ScalarProperty Name="ExerciseID" ColumnName="ExerciseID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

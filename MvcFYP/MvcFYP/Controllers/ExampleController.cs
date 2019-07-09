@@ -43,6 +43,8 @@ namespace MvcFYP.Controllers
 
         public ActionResult Show(int exampleID)
         {
+            int userID = (int)Session["userID"];
+
             ExampleViewModel exampleVM = new ExampleViewModel()
             {
                 StudentRecord = new StudentRecord()
@@ -51,29 +53,54 @@ namespace MvcFYP.Controllers
             var example = db.Examples.SingleOrDefault(x => x.Id == exampleID);
             exampleVM.Example = example;
 
-            int userID = (int)Session["userID"];
-
+            //assign the actual answer value to exercise.ActualCorrectAnswer
             foreach(var exercise in exampleVM.Example.Exercises)
             {
-                if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id))
+                if (exercise.CorrectAnswer == "Answer1")
                 {
-                    exercise.IsDone = true;
+                    exercise.ActualCorrectAnswer = exercise.Answer1;
                 }
-                else
+                else if (exercise.CorrectAnswer == "Answer2")
                 {
-                    exercise.IsDone = false;
+                    exercise.ActualCorrectAnswer = exercise.Answer2;
+                }
+                else if (exercise.CorrectAnswer == "Answer3")
+                {
+                    exercise.ActualCorrectAnswer = exercise.Answer3;
+                }
+                else if (exercise.CorrectAnswer == "Answer4")
+                {
+                    exercise.ActualCorrectAnswer = exercise.Answer4;
                 }
 
-                if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id && y.Result == "Correct"))
+                if(db.StudentRecords.Any(x => x.ExerciseID == exercise.Id))
                 {
-                    exercise.IsCorrect = true;
+                    exercise.StudentRecordForThisExercise = db.StudentRecords.SingleOrDefault(x => x.ExerciseID == exercise.Id && x.UserID == userID);
                 }
-                else
-                {
-                    exercise.IsCorrect = false;
-                }
-
             }
+
+
+            //foreach(var exercise in exampleVM.Example.Exercises)
+            //{
+            //    if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id))
+            //    {
+            //        exercise.IsDone = true;
+            //    }
+            //    else
+            //    {
+            //        exercise.IsDone = false;
+            //    }
+
+            //    if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id && y.Result == "Correct"))
+            //    {
+            //        exercise.IsCorrect = true;
+            //    }
+            //    else
+            //    {
+            //        exercise.IsCorrect = false;
+            //    }
+
+            //}
 
             return View(exampleVM);
         }
@@ -82,52 +109,92 @@ namespace MvcFYP.Controllers
         public ActionResult StoreStudentRecord(ExampleViewModel exampleVM)
         {
             bool checkExist = false;
-            bool checkExist2 = false;
-            string checkAnswer = "";
+            int userID = (int)Session["userID"];
+            int exerciseID = exampleVM.StudentRecord.ExerciseID;
+            Exercis currentExercise = db.Exercises.SingleOrDefault(x => x.Id == exerciseID);
+            string submittedAnswer = exampleVM.StudentRecord.TempAnswer;
+            string correctAnswer = "";
 
-            exampleVM.StudentRecord.UserID = (int)Session["userID"];
-            var exercise = db.Exercises.SingleOrDefault(y => y.Id == exampleVM.StudentRecord.ExerciseID);
-            Exercis ex = exercise;
-
-            if(ex.CorrectAnswer == "Answer1")
+            if (currentExercise.CorrectAnswer == "Answer1")
             {
-                checkAnswer = ex.Answer1;
-            } else if(ex.CorrectAnswer == "Answer2")
-            {
-                checkAnswer = ex.Answer2;
+                correctAnswer = currentExercise.Answer1;
             }
-            else if (ex.CorrectAnswer == "Answer3")
+            else if (currentExercise.CorrectAnswer == "Answer2")
             {
-                checkAnswer = ex.Answer3;
+                correctAnswer = currentExercise.Answer2;
             }
-            else if (ex.CorrectAnswer == "Answer4")
+            else if (currentExercise.CorrectAnswer == "Answer3")
             {
-                checkAnswer = ex.Answer4;
+                correctAnswer = currentExercise.Answer3;
             }
-
-            if (exampleVM.StudentRecord.Answer == checkAnswer)
+            else if (currentExercise.CorrectAnswer == "Answer4")
             {
-                exampleVM.StudentRecord.Result = "Correct";
-            }
-            else
-            {
-                exampleVM.StudentRecord.Result = "Wrong";
+                correctAnswer = currentExercise.Answer4;
             }
 
-            exampleVM.StudentRecord.Date = DateTime.Now;
 
-            //check if record exists
-            checkExist = db.StudentRecords.Any(x => x.UserID == exampleVM.StudentRecord.UserID && x.ExerciseID == exampleVM.StudentRecord.ExerciseID && x.Answer == exampleVM.StudentRecord.Answer && x.Result == exampleVM.StudentRecord.Result);
+            checkExist = db.StudentRecords.Any(x => x.UserID == userID && x.ExerciseID == exerciseID);
+            StudentRecord existingStudentRecord = db.StudentRecords.SingleOrDefault(x => x.UserID == userID && x.ExerciseID == exerciseID);
 
-            checkExist2 = db.StudentRecords.Any(x => x.UserID == exampleVM.StudentRecord.UserID && x.ExerciseID == exampleVM.StudentRecord.ExerciseID && x.Result == "Correct");
-
-            if (checkExist == false && checkExist2 == false)
+            if (checkExist && existingStudentRecord.CorrectAttempt == null)
             {
-                db.StudentRecords.Add(exampleVM.StudentRecord);
+                //if student record exist update the record.
+
+                if (existingStudentRecord.Attempt2 == null)
+                {
+                    existingStudentRecord.Attempt2 = submittedAnswer;
+                    if(submittedAnswer == correctAnswer)
+                    {
+                        existingStudentRecord.CorrectAttempt = "Attempt2";
+                    }
+                }
+                else if (existingStudentRecord.Attempt3 == null)
+                {
+                    existingStudentRecord.Attempt3 = submittedAnswer;
+                    if (submittedAnswer == correctAnswer)
+                    {
+                        existingStudentRecord.CorrectAttempt = "Attempt3";
+                    }
+                }
+                else
+                {
+                    existingStudentRecord.Attempt4 = submittedAnswer;
+                    if (submittedAnswer == correctAnswer)
+                    {
+                        existingStudentRecord.CorrectAttempt = "Attempt4";
+                    }
+                }
+
+                existingStudentRecord.Date = DateTime.Now;
+
+                if (ModelState.IsValid)
+                {
+                    db.Entry(existingStudentRecord).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+            }
+            else if(!checkExist)
+            {
+                //if student record not exist then create a new student record
+
+                StudentRecord newStudentRecord = new StudentRecord();
+                newStudentRecord.UserID = userID;
+                newStudentRecord.ExerciseID = exerciseID;
+                newStudentRecord.Attempt1 = submittedAnswer;
+
+                if(submittedAnswer == correctAnswer)
+                {
+                    newStudentRecord.CorrectAttempt = "Attempt1";
+                }
+
+                newStudentRecord.Date = DateTime.Now;
+
+                db.StudentRecords.Add(newStudentRecord);
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Show", "Example", new { exampleID = ex.ExampleID });
+            return RedirectToAction("Show", "Example", new { exampleID = currentExercise.ExampleID });
         }
 
         public ActionResult Edit(int exampleID)

@@ -4,12 +4,25 @@
     ViewBag.Title = "Edit";
 }
 
+@{
+    if (Session["userID"] == null || ((string)Session["role"] != "Lecturer" && (string)Session["role"] != "Admin"))
+    {
+        <script>
+            $(document).ready(function () {
+                alert('Not Authorized');
+                window.location.href = "../Login/Index";
+            });
+        </script>
+        //Response.Redirect("~/Login/Index");
+    }
+}
+
 <h2>Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Topic</h4>
         <hr />

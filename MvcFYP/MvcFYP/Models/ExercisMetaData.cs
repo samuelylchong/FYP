@@ -24,6 +24,8 @@ namespace MvcFYP.Models
 
         public bool IsDone { get; set; }
         public bool IsCorrect { get; set; }
+        public string ActualCorrectAnswer { get; set; }
+        public StudentRecord StudentRecordForThisExercise { get; set; }
 
     }
 }

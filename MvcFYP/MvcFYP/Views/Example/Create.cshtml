@@ -5,7 +5,7 @@
 }
 
 @{
-    if (Session["userID"] == null || (string)Session["role"] != "Lecturer")
+    if (Session["userID"] == null || (string)Session["role"] != "Lecturer" || (string)Session["role"] != "Admin")
     {
         <script>
             $(document).ready(function () {

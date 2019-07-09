@@ -11,11 +11,24 @@ namespace MvcFYP.Models
     {
         sealed class Metadata
         {
-            public string Answer { get; set; }
-            public string Result { get; set; }
+            [Display(Name = "First Attempt Answer")]
+            public string Attempt1 { get; set; }
+
+            [Display(Name = "Second Attempt Answer")]
+            public string Attempt2 { get; set; }
+
+            [Display(Name = "Third Attempt Answer")]
+            public string Attempt3 { get; set; }
+
+            [Display(Name = "Final Attempt Answer")]
+            public string Attempt4 { get; set; }
+
             [DataType(DataType.Date)]
             public string Date { get; set; }
         }
+
+        public string TempAnswer { get; set; }
+        public bool showHint { get; set; }
 
     }
 }

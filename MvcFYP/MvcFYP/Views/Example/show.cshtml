@@ -34,7 +34,7 @@
 <br>
 
 @{
-    if ((string)Session["role"] == "Lecturer")
+    if ((string)Session["role"] == "Lecturer" || (string)Session["role"] == "Admin")
     {
         <br>
         @*SELECT ACTION DROPDOWN*@
@@ -60,95 +60,160 @@
 <h2 class="" style="width: 70%">@Html.DisplayFor(model => model.Example.Name, new { @class = "control-label col-md-2" })</h2>
 <br><br>
 
-    <div class="clearfix" style="width: 95%">
-        <div class="float-left" style="width: 60%; margin-left: -10%">
-            <p class="fontSize-medium" style="width: 115%">Question: @Html.DisplayFor(model => model.Example.Question, new { @class = "control-label col-md-2" })</p><br>
+<div class="clearfix" style="width: 95%">
+    <div class="float-left" style="width: 60%; margin-left: -10%">
+        <p class="fontSize-medium" style="width: 115%">Question: @Html.DisplayFor(model => model.Example.Question, new { @class = "control-label col-md-2" })</p><br>
 
-            <div class="form-group">
-                <div class="col-md-10" style="font-size: 17px; margin-left: -2%;">
-                    @Html.TextAreaFor(model => model.Example.Answer, new { id = "codeEditor" })
-                </div>
+        <div class="form-group">
+            <div class="col-md-10" style="font-size: 17px; margin-left: -2%;">
+                @Html.TextAreaFor(model => model.Example.Answer, new { id = "codeEditor" })
             </div>
-
-            <script>
-                var editor = CodeMirror.fromTextArea
-                    (document.getElementById('codeEditor'), {
-                        lineNumbers: true,
-                        mode: "clike",
-                        readOnly: true,
-                        theme: "eclipse",
-                    });
-                editor.setSize(740, 600);
-            </script>
-            <br>
         </div>
 
-        @*DISPLAY EXERCISES*@
-        <div class="float-right">
-            <fieldset>
-                <br>
-                <h3>Exercises</h3>
-                <br>
-                <div id="easyPaginate">
-                    @{int count = 1;}
-                    @*LOOP EXERCISES*@
-                    @foreach (var exercise in Model.Example.Exercises)
-                    {
-                        <section style="width: 150%">
-                            <div>
-                                <div class="float-right">
-                                    <a href="@Url.Action("Edit", "Exercise",  new { exerciseID = exercise.Id}, null)">Edit  |</a>
-                                    <a href="@Url.Action("Delete", "Exercise",  new { id = exercise.Id}, null)" onclick="return confirm('Are you sure you want to Delete?')"> Delete</a>
-                                </div>
-                                <p class="fontSize-medium">Question @(count))</p>
-                                <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
+        <script>
+            var editor = CodeMirror.fromTextArea
+                (document.getElementById('codeEditor'), {
+                    lineNumbers: true,
+                    mode: "clike",
+                    readOnly: true,
+                    theme: "eclipse",
+                });
+            editor.setSize(740, 600);
+        </script>
+        <br>
+    </div>
+
+    @*DISPLAY EXERCISES*@
+    <div class="float-right">
+        <fieldset>
+            <br>
+            <h3>Exercises</h3>
+            <br>
+            <div id="easyPaginate">
+                @{int count = 1;}
+                @*LOOP EXERCISES*@
+                @foreach (var exercise in Model.Example.Exercises)
+                {
+                <section style="width: 150%">
+                    <div>
+                        @if ((string)Session["role"] == "Lecturer" || (string)Session["role"] == "Admin")
+                        {
+                            <div class="float-right">
+                                <a href="@Url.Action("Edit", "Exercise",  new { exerciseID = exercise.Id}, null)">Edit  |</a>
+                                <a href="@Url.Action("Delete", "Exercise",  new { id = exercise.Id}, null)" onclick="return confirm('Are you sure you want to Delete?')"> Delete</a>
                             </div>
+                        }
+                        <p class="fontSize-medium">Question @(count))</p>
+                        <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
+                    </div>
 
-                            @*RADIO BUTTONS AND SUBMIT STUDENT ANSWER*@
-                            @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
+                    @*RADIO BUTTONS AND SUBMIT STUDENT ANSWER*@
+                    @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
+                    {
+                        //ticked the correct answer radiobutton if the student have done it correctly before
+                        if (exercise.StudentRecordForThisExercise != null)
+                        {
+                            if (exercise.StudentRecordForThisExercise.CorrectAttempt != null)
                             {
-                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
-                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
-                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
-                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.Answer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
-
-                                //ASSIGN VALUE TO StudentRecord.ExerciseID
-                                @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
-
-
-                                <br />
-                                @*HINT*@
-                                <div style="width: 40%" class="clearfix">
-                                    <button type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
-
-                                    @if (exercise.IsDone)
-                                    {
-                                        <a class="status-icon  hint--top-left  hint--info" style="background:lightblue; margin-left: 10%" aria-label="@Html.DisplayFor(x => exercise.Hint)">
-                                            <svg style="width:30px;height:40px" viewBox="0 0 24 24">
-                                                <path fill="#ffffff" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z"></path>
-                                            </svg>
-                                        </a>
-                                    }
-                                </div><br>
-
-                                if (exercise.IsDone && exercise.IsCorrect)
+                                if (exercise.CorrectAnswer == "Answer1")
                                 {
-                                    <p class="text-success">Correct Answer. Proceed to the next question</p>
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer1, new { @checked = "checked" })   @Html.DisplayFor(y => exercise.Answer1)</p>
                                 }
-                                else if (exercise.IsDone && exercise.IsCorrect == false)
+                                else
                                 {
-                                    <p class="text-danger">Wrong answer! Please try again</p>
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
+                                }
+
+                                if (exercise.CorrectAnswer == "Answer2")
+                                {
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer2, new { @checked = "checked" })   @Html.DisplayFor(y => exercise.Answer2)</p>
+                                }
+                                else
+                                {
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
+                                }
+
+                                if (exercise.CorrectAnswer == "Answer3")
+                                {
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer3, new { @checked = "checked" })   @Html.DisplayFor(y => exercise.Answer3)</p>
+                                }
+                                else
+                                {
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
+                                }
+
+                                if (exercise.CorrectAnswer == "Answer4")
+                                {
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer4, new { @checked = "checked" })   @Html.DisplayFor(y => exercise.Answer4)</p>
+                                }
+                                else
+                                {
+                                    <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
                                 }
                             }
-                            <br>
-                        </section>
-                        count++;
+                            else
+                            {
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
+                                <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
+                            }
+                        }
+                        //if no studentrecord for this exercise or have studentrecord but have not yet answer it correctly then do not ticked any radiobutton
+                        else if (exercise.StudentRecordForThisExercise == null || exercise.StudentRecordForThisExercise.CorrectAttempt == null)
+                        {
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer1)   @Html.DisplayFor(y => exercise.Answer1)</p>
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer2)   @Html.DisplayFor(y => exercise.Answer2)</p>
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer3)   @Html.DisplayFor(y => exercise.Answer3)</p>
+                            <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
+                        }
+
+                        <p id="ActualCorrectAnswer">@exercise.ActualCorrectAnswer</p>
+
+                        //ASSIGN VALUE TO StudentRecord.ExerciseID
+                        @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
+
+                        <br />
+                        @*HINT*@
+                        <div style="width: 40%" class="clearfix">
+                            <button id="submitAnswer" type="submit" value="Submit" class="btn btn-primary float-left">Submit</button>
+
+                            @if (exercise.StudentRecordForThisExercise != null)
+                            {
+                                <a class="status-icon  hint--top-left  hint--info" style="background:lightblue; margin-left: 10%" aria-label="@Html.DisplayFor(x => exercise.Hint)">
+                                    <svg style="width:30px;height:40px" viewBox="0 0 24 24">
+                                        <path fill="#ffffff" d="M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z"></path>
+                                    </svg>
+                                </a>
+                            }
+                        </div><br>
+
+                        @*if (exercise.IsDone && exercise.IsCorrect)
+                        {
+                            <p class="text-success">Correct Answer. Proceed to the next question</p>
+                        }
+                        else if (exercise.IsDone && exercise.IsCorrect == false)
+                        {
+                            <p class="text-danger">Wrong answer! Please try again</p>
+                        }*@
+
+                        if (exercise.StudentRecordForThisExercise != null)
+                        {
+                            if (exercise.StudentRecordForThisExercise.CorrectAttempt != null)
+                            {
+                                <p class="text-success">Note: You have answer this correctly. Proceed to the next question</p>
+                            }
+                        }
                     }
-                </div>
-            </fieldset>
-        </div>
-        <div class="verticalLine"></div>
+                    <br>
+                </section>
+                    count++;
+                }
+            </div>
+        </fieldset>
     </div>
+    <div class="verticalLine"></div>
+</div>
 
 <script>
     $('#easyPaginate').easyPaginate({
@@ -159,3 +224,21 @@
     });
 </script>
 
+@*<script type="text/javascript">
+    document.getElementById('submitAnswer').onclick = function () {
+        var radioValue = $("input[name='StudentRecord.TempAnswer']:checked").val();
+        var answer = $('#ActualCorrectAnswer').text();
+        if (radioValue == answer) {
+            alert("Well done! Correct Answer.")
+        } else {
+            alert("Wrong Answer!")
+        }
+    }
+</script>*@
+
+<script type="text/javascript">
+    document.getElementById('submitAnswer').onclick = function () {
+        var radioValue = $("input[name='StudentRecord.TempAnswer']:checked").val();
+        alert(radioValue);
+    }
+</script>

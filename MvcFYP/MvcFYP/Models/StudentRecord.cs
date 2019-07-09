@@ -17,9 +17,12 @@ namespace MvcFYP.Models
         public int Id { get; set; }
         public int UserID { get; set; }
         public int ExerciseID { get; set; }
-        public string Answer { get; set; }
-        public string Result { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
+        public string Attempt1 { get; set; }
+        public string Attempt2 { get; set; }
+        public string Attempt3 { get; set; }
+        public string Attempt4 { get; set; }
+        public string CorrectAttempt { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual Exercis Exercis { get; set; }
         public virtual User User { get; set; }
