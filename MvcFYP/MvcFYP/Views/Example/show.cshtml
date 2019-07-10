@@ -55,6 +55,9 @@
     }
 }
 
+@*DISPLAY FEEDBACK*@
+<p id="feedback-message" hidden>@Html.DisplayFor(model => model.Feedback)</p>
+
 
 @*DISPLAY EXAMPLE*@
 <h2 class="" style="width: 70%">@Html.DisplayFor(model => model.Example.Name, new { @class = "control-label col-md-2" })</h2>
@@ -106,6 +109,7 @@
                         <p class="fontSize-medium">Question @(count))</p>
                         <p class="fontSize-medium">@Html.DisplayFor(x => exercise.Question)</p>
                     </div>
+                    <br>
 
                     @*RADIO BUTTONS AND SUBMIT STUDENT ANSWER*@
                     @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
@@ -188,15 +192,6 @@
                             }
                         </div><br>
 
-                        @*if (exercise.IsDone && exercise.IsCorrect)
-                        {
-                            <p class="text-success">Correct Answer. Proceed to the next question</p>
-                        }
-                        else if (exercise.IsDone && exercise.IsCorrect == false)
-                        {
-                            <p class="text-danger">Wrong answer! Please try again</p>
-                        }*@
-
                         if (exercise.StudentRecordForThisExercise != null)
                         {
                             if (exercise.StudentRecordForThisExercise.CorrectAttempt != null)
@@ -225,7 +220,7 @@
 </script>
 
 @*<script type="text/javascript">
-    document.getElementById('submitAnswer').onclick = function () {
+    document.getElementById('submitAnswer1').onclick = function () {
         var radioValue = $("input[name='StudentRecord.TempAnswer']:checked").val();
         var answer = $('#ActualCorrectAnswer').text();
         if (radioValue == answer) {
@@ -234,11 +229,23 @@
             alert("Wrong Answer!")
         }
     }
+    document.getElementById('submitAnswer2').onclick = function () {
+        var radioValue = $("input[name='StudentRecord.TempAnswer']:checked").val();
+        var answer = $('#ActualCorrectAnswer').text();
+        if (radioValue == answer) {
+            alert("Well done! Correct Answer.")
+        } else {
+            alert("Wrong Answer!")
+        }
+    }
+
 </script>*@
 
 <script type="text/javascript">
-    document.getElementById('submitAnswer').onclick = function () {
-        var radioValue = $("input[name='StudentRecord.TempAnswer']:checked").val();
-        alert(radioValue);
+    var feedback = $('#feedback-message').text();
+    if (feedback == "") {
+
+    } else {
+        alert(feedback)
     }
 </script>

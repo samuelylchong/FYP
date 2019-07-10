@@ -10,5 +10,6 @@ namespace MvcFYP.ViewModels
     {
         public Example Example { get; set; }
         public StudentRecord StudentRecord { get; set; }
+        public string Feedback { get; set; }
     }
 }

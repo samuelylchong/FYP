@@ -41,7 +41,7 @@ namespace MvcFYP.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        public ActionResult Show(int exampleID)
+        public ActionResult Show(int exampleID, string feedback)
         {
             int userID = (int)Session["userID"];
 
@@ -52,6 +52,12 @@ namespace MvcFYP.Controllers
 
             var example = db.Examples.SingleOrDefault(x => x.Id == exampleID);
             exampleVM.Example = example;
+            exampleVM.Feedback = null;
+
+            if(feedback != null)
+            {
+                exampleVM.Feedback = feedback;
+            }
 
             //assign the actual answer value to exercise.ActualCorrectAnswer
             foreach(var exercise in exampleVM.Example.Exercises)
@@ -78,29 +84,6 @@ namespace MvcFYP.Controllers
                     exercise.StudentRecordForThisExercise = db.StudentRecords.SingleOrDefault(x => x.ExerciseID == exercise.Id && x.UserID == userID);
                 }
             }
-
-
-            //foreach(var exercise in exampleVM.Example.Exercises)
-            //{
-            //    if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id))
-            //    {
-            //        exercise.IsDone = true;
-            //    }
-            //    else
-            //    {
-            //        exercise.IsDone = false;
-            //    }
-
-            //    if(db.StudentRecords.Any(y => y.UserID == userID && y.ExerciseID == exercise.Id && y.Result == "Correct"))
-            //    {
-            //        exercise.IsCorrect = true;
-            //    }
-            //    else
-            //    {
-            //        exercise.IsCorrect = false;
-            //    }
-
-            //}
 
             return View(exampleVM);
         }
@@ -194,7 +177,17 @@ namespace MvcFYP.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Show", "Example", new { exampleID = currentExercise.ExampleID });
+            //send feedback
+            string feedbackMessage;
+            if(submittedAnswer == correctAnswer)
+            {
+                feedbackMessage = "Well done! Correct Answer.";
+            } else
+            {
+                feedbackMessage = "Wrong Answer!";
+            }
+
+            return RedirectToAction("Show", "Example", new { exampleID = currentExercise.ExampleID , feedback = feedbackMessage });
         }
 
         public ActionResult Edit(int exampleID)

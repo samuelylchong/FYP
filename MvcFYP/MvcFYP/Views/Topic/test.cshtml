@@ -69,3 +69,45 @@
 <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer3, new { @Name = "Answer" })   @Html.DisplayFor(y => exercise.Answer3)</p>
 <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer4, new { @Name = "Answer" })   @Html.DisplayFor(y => exercise.Answer4)</p>
                         }
+
+
+        if (item.Result == "Correct")
+        {
+            <tr style="background-color: lightgreen">
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exercis.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Answer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr style="background-color: lightcoral">
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exercis.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Answer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+        }

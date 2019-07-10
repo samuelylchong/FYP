@@ -131,7 +131,7 @@
                             @foreach (var exampleName in topic.Examples)
                             {
                                 <li>
-                                    <a href=@Url.Action("show", "Example", new { exampleID = exampleName.Id}, null)>
+                                    <a href=@Url.Action("show", "Example", new { exampleID = exampleName.Id }, null)>
                                         @Html.DisplayFor(y => exampleName.Name)
                                     </a>
                                 </li>

@@ -1,7 +1,7 @@
 ﻿@model MvcFYP.ViewModels.ActivityViewModel
 
 @{
-    if (Session["userID"] == null)
+    if (Session["userID"] == null || ((string)Session["role"] != "Lecturer" && (string)Session["role"] != "Admin"))
     {
         <script>
             $(document).ready(function () {
@@ -35,10 +35,16 @@
             @Html.DisplayNameFor(model => model.StudentRecord.Exercis.Question)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StudentRecord.Answer)
+            @Html.DisplayNameFor(model => model.StudentRecord.Attempt1)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StudentRecord.Result)
+            @Html.DisplayNameFor(model => model.StudentRecord.Attempt2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.Attempt3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentRecord.Attempt4)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StudentRecord.Date)
@@ -47,46 +53,96 @@
 
     @foreach (var item in Model.StudentRecordItems)
     {
-        if (item.Result == "Correct")
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exercis.Question)
+        </td>
+
+        @if (item.CorrectAttempt == "Attempt1")
         {
-            <tr style="background-color: lightgreen">
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Exercis.Question)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Answer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Result)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-            </tr>
+            <td style="background-color: lightgreen">
+                @Html.DisplayFor(modelItem => item.Attempt1)
+            </td>
+        }
+        else if (item.Attempt1 == null)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Attempt1)
+            </td>
         }
         else
         {
-            <tr style="background-color: lightcoral">
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Exercis.Question)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Answer)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Result)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-            </tr>
+            <td style="background-color: lightcoral">
+                @Html.DisplayFor(modelItem => item.Attempt1)
+            </td>
         }
+
+        @if (item.CorrectAttempt == "Attempt2")
+        {
+            <td style="background-color: lightgreen">
+                @Html.DisplayFor(modelItem => item.Attempt2)
+            </td>
+        }
+        else if (item.Attempt2 == null)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Attempt2)
+            </td>
+        }
+        else
+        {
+            <td style="background-color: lightcoral">
+                @Html.DisplayFor(modelItem => item.Attempt2)
+            </td>
+        }
+
+
+        @if (item.CorrectAttempt == "Attempt3")
+        {
+            <td style="background-color: lightgreen">
+                @Html.DisplayFor(modelItem => item.Attempt3)
+            </td>
+        }
+        else if (item.Attempt3 == null)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Attempt3)
+            </td>
+        }
+        else
+        {
+            <td style="background-color: lightcoral">
+                @Html.DisplayFor(modelItem => item.Attempt3)
+            </td>
+        }
+
+        @if (item.CorrectAttempt == "Attempt4")
+        {
+            <td style="background-color: lightgreen">
+                @Html.DisplayFor(modelItem => item.Attempt4)
+            </td>
+        }
+        else if (item.Attempt4 == null)
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.Attempt4)
+            </td>
+        }
+        else
+        {
+            <td style="background-color: lightcoral">
+                @Html.DisplayFor(modelItem => item.Attempt4)
+            </td>
+        }
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+
+    </tr>
 
 
     }

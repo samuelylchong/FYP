@@ -11,13 +11,18 @@ namespace MvcFYP.Models
     {
         sealed class Metadata
         {
+            [Required(ErrorMessage = "*This field require!")]
             public string Question { get; set; }
+
+            [Required(ErrorMessage = "*This field require!")]
             public string Hint { get; set; }
             public string Answer1 { get; set; }
             public string Answer2 { get; set; }
             public string Answer3 { get; set; }
             public string Answer4 { get; set; }
+
             [Display(Name = "Correct Answer")]
+            [Required(ErrorMessage = "*Please select an answer!")]
             public string CorrectAnswer { get; set; }
             public int ExampleID { get; set; }
         }
