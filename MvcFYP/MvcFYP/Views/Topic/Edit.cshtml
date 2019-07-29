@@ -4,6 +4,7 @@
     ViewBag.Title = "Edit";
 }
 
+
 @{
     if (Session["userID"] == null || ((string)Session["role"] != "Lecturer" && (string)Session["role"] != "Admin"))
     {
@@ -16,6 +17,9 @@
         //Response.Redirect("~/Login/Index");
     }
 }
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <h2>Edit</h2>
 

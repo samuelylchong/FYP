@@ -44,6 +44,9 @@
 }
 
 
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 <!DOCTYPE html>
 
 <html>
@@ -84,6 +87,7 @@
                             @Html.LabelFor(model => model.Topic.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Topic.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Topic.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -128,13 +132,27 @@
                 <div id="collapse@(i)" class="collapse" aria-labelledby="heading@(i)" data-parent="#accordionExample">
                     <div class="card-body">
                         <ul>
-                            @foreach (var exampleName in topic.Examples)
+                            @if ((string)Session["role"] == "Lecturer" || (string)Session["role"] == "Admin")
                             {
-                                <li>
-                                    <a href=@Url.Action("show", "Example", new { exampleID = exampleName.Id }, null)>
-                                        @Html.DisplayFor(y => exampleName.Name)
-                                    </a>
-                                </li>
+                                foreach (var exampleName in topic.Examples)
+                                {
+                                    <li>
+                                        <a href=@Url.Action("show", "Example", new { exampleID = exampleName.Id }, null)>
+                                            @Html.DisplayFor(y => exampleName.Name)
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var exampleName in topic.Examples.Where(x => x.Visible == true))
+                                {
+                                    <li>
+                                        <a href=@Url.Action("show", "Example", new { exampleID = exampleName.Id }, null)>
+                                            @Html.DisplayFor(y => exampleName.Name)
+                                        </a>
+                                    </li>
+                                }
                             }
                         </ul>
 

@@ -12,10 +12,12 @@ namespace MvcFYP.Controllers
     public class ActivityController : Controller
     {
         FYPEntities db = new FYPEntities();
+        //int? ExampleID;
 
         // GET: Activity
         public ActionResult Index()
         {
+            Session["ExampleID"] = null;
             ActivityViewModel activityVM = new ActivityViewModel();
 
             activityVM.StudentRecordItems = db.StudentRecords.ToList();
@@ -25,6 +27,8 @@ namespace MvcFYP.Controllers
 
         public ActionResult GetRelatedActivity(int exampleID)
         {
+            Session["ExampleID"] = exampleID;
+
             var example = db.Examples.Find(exampleID);
             ActivityViewModel activityVM = new ActivityViewModel();
             
@@ -47,15 +51,33 @@ namespace MvcFYP.Controllers
         {
             ActivityViewModel ActivityVM = new ActivityViewModel();
 
-            if(activityVM.Search == null)
+            if (Session["ExampleID"] != null)
             {
-                ActivityVM.StudentRecordItems = db.StudentRecords.ToList();
+                int ExampleID = (int)Session["ExampleID"];
+
+                if (activityVM.Search == null)
+                {
+                    ActivityVM.StudentRecordItems = db.StudentRecords.Where(x => x.Exercis.ExampleID == ExampleID).ToList();
+                }
+                else
+                {
+                    ActivityVM.StudentRecordItems = db.StudentRecords.Where(x => x.User.Username == activityVM.Search && x.Exercis.ExampleID == ExampleID).ToList();
+                }
+
             }
             else
             {
-                ActivityVM.StudentRecordItems = db.StudentRecords.Where(x => x.User.Username == activityVM.Search).ToList();
-            }
+                // ExampleID is null
 
+                if (activityVM.Search == null)
+                {
+                    ActivityVM.StudentRecordItems = db.StudentRecords.ToList();
+                }
+                else
+                {
+                    ActivityVM.StudentRecordItems = db.StudentRecords.Where(x => x.User.Username == activityVM.Search).ToList();
+                }
+            }
 
             return View("Index", ActivityVM);
         }

@@ -205,6 +205,7 @@ namespace MvcFYP.Controllers
             example.Name = exampleVM.Example.Name;
             example.Question = exampleVM.Example.Question;
             example.Answer = exampleVM.Example.Answer;
+            example.Visible = exampleVM.Example.Visible;
             
             if(ModelState.IsValid)
             {

@@ -45,10 +45,10 @@
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="@Url.Action("Create", "Exercise",  new { exampleID = Model.Example.Id}, null)">Add Exercise</a>
-                    <a class="dropdown-item" href="@Url.Action("Edit", "Example",  new { exampleID = Model.Example.Id}, null)">Edit Example</a>
-                    <a class="dropdown-item" href="@Url.Action("Delete", "Example",  new { id = Model.Example.Id}, null)" onclick="return confirm('Are you sure you want to Delete?')">Delete Example</a>
-                    <a class="dropdown-item" href="@Url.Action("GetRelatedActivity", "Activity",  new { exampleID = Model.Example.Id}, null)">Recent Activities</a>
+                    <a class="dropdown-item" href="@Url.Action("Create", "Exercise", new { exampleID = Model.Example.Id }, null)">Add Exercise</a>
+                    <a class="dropdown-item" href="@Url.Action("Edit", "Example", new { exampleID = Model.Example.Id }, null)">Edit Example</a>
+                    <a class="dropdown-item" href="@Url.Action("Delete", "Example", new { id = Model.Example.Id }, null)" onclick="return confirm('Are you sure you want to Delete?')">Delete Example</a>
+                    <a class="dropdown-item" href="@Url.Action("GetRelatedActivity", "Activity", new { exampleID = Model.Example.Id }, null)">Student's Answer</a>
                 </div>
             </div>
         </div>
@@ -114,6 +114,7 @@
                     @*RADIO BUTTONS AND SUBMIT STUDENT ANSWER*@
                     @using (Html.BeginForm("StoreStudentRecord", "Example", FormMethod.Post))
                     {
+
                         //ticked the correct answer radiobutton if the student have done it correctly before
                         if (exercise.StudentRecordForThisExercise != null)
                         {
@@ -194,7 +195,11 @@
 
                         if (exercise.StudentRecordForThisExercise != null)
                         {
-                            if (exercise.StudentRecordForThisExercise.CorrectAttempt != null)
+                            if (exercise.StudentRecordForThisExercise.CorrectAttempt != null && exercise == Model.Example.Exercises.Last())
+                            {
+                                <p class="text-success">Note: You have completed all the questions</p>
+                            }
+                            else if (exercise.StudentRecordForThisExercise.CorrectAttempt != null)
                             {
                                 <p class="text-success">Note: You have answer this correctly. Proceed to the next question</p>
                             }

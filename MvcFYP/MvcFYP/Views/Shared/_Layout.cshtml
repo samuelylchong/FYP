@@ -30,7 +30,7 @@
         @Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link nav-link-2" })
         @if ((string)Session["role"] == "Lecturer" || (string)Session["role"] == "Admin")
         {
-            @Html.ActionLink("Activities", "Index", "Activity", null, new { @class = "nav-link nav-link-2" })
+            @Html.ActionLink("Student's Answer", "Index", "Activity", null, new { @class = "nav-link nav-link-2", style = "width: 20%"})
 
         }
         @if((string)Session["role"] == "Admin")

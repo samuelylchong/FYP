@@ -11,11 +11,15 @@ namespace MvcFYP.Models
     {
         sealed class Metadata
         {
+            [Required(ErrorMessage = "*This field is required.")]
             public string Name { get; set; }
             public string Question { get; set; }
 
             [AllowHtml]
             public string Answer { get; set; }
+
+            [Display(Name = "Visible to student")]
+            public bool Visible { get; set; }
         }
     }
 }

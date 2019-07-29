@@ -173,6 +173,7 @@
     <Compile Include="Models\Topic.cs">
       <DependentUpon>FYP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TopicMetadata.cs" />
     <Compile Include="Models\User.cs">
       <DependentUpon>FYP.tt</DependentUpon>
     </Compile>
