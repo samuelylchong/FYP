@@ -35,7 +35,8 @@
             </td>
             <td>@Html.DisplayFor(modelItem => item.Role)</td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                <a href="@Url.Action("Delete", "User", new { id = item.Id }, null)" onclick="return confirm('Are you sure you want to Delete?')">Delete</a>
             </td>
         </tr>
     }

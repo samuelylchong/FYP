@@ -205,6 +205,7 @@
     <Content Include="Images\Delete_button.png" />
     <Content Include="Images\Edit_button.png" />
     <Content Include="Images\title_image.png" />
+    <Content Include="Images\title_image2.png" />
     <Content Include="jquery.easyPaginate-master\demo\css\bootstrap.css" />
     <Content Include="jquery.easyPaginate-master\demo\css\bootstrap.min.css" />
     <Content Include="jquery.easyPaginate-master\demo\css\jquery.snippet.min.css" />

@@ -34,8 +34,6 @@ namespace MvcFYP.Models
             public int ExampleID { get; set; }
         }
 
-        public bool IsDone { get; set; }
-        public bool IsCorrect { get; set; }
         public string ActualCorrectAnswer { get; set; }
         public StudentRecord StudentRecordForThisExercise { get; set; }
 

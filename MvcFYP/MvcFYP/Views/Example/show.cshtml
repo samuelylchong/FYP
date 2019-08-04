@@ -173,7 +173,7 @@
                             <p class="fontSize-medium">@Html.RadioButtonFor(x => x.StudentRecord.TempAnswer, exercise.Answer4)   @Html.DisplayFor(y => exercise.Answer4)</p>
                         }
 
-                        <p id="ActualCorrectAnswer">@exercise.ActualCorrectAnswer</p>
+                        @*<p id="ActualCorrectAnswer">@exercise.ActualCorrectAnswer</p>*@
 
                         //ASSIGN VALUE TO StudentRecord.ExerciseID
                         @Html.TextBoxFor(c => c.StudentRecord.ExerciseID, new { @Value = exercise.Id, style = "display: none;" })
